@@ -3,7 +3,7 @@ jobs: # A basic unit of work in a run
   build: # runs not using Workflows must have a `build` job as entry point 
     docker: # run the steps with Docker
       # CircleCI Python images available at: https://hub.docker.com/r/circleci/python/
-      - image: circleci/python:3.6.4
+      - image: circleci/python:3.7
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
