@@ -1,4 +1,4 @@
-version: 2 # use CircleCI 2.0
+version: 2 # use CircleCI 2.0//////
 jobs: # A basic unit of work in a run
   build: # runs not using Workflows must have a `build` job as entry point 
     docker: # run the steps with Docker
@@ -27,6 +27,8 @@ jobs: # A basic unit of work in a run
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
       - run:
           command: |
+            sudo pip install pipenv
+            pipenv install
             pip install -r requirements/dev.txt --user
       - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
