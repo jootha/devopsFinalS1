@@ -31,8 +31,10 @@ jobs: # A basic unit of work in a run
             export FLASK_APP=/path/to/autoapp.py
             export FLASK_DEBUG=1
             sudo pip install pipenv
+            pipenv lock
             pipenv install
             pip install -r requirements/dev.txt --user
+            
       - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
