@@ -1,4 +1,11 @@
-version: 2 # use CircleCI 2.0
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - back-deploy-heroku:
+          requires:
+            - build
 jobs: # A basic unit of work in a run
   build: # runs not using Workflows must have a `build` job as entry point 
     docker: # run the steps with Docker
@@ -50,3 +57,24 @@ jobs: # A basic unit of work in a run
       - store_artifacts: # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
           path: test-results
           destination: tr1
+          
+  back-deploy-heroku:
+    docker:
+      - image: buildpack-deps:trusty
+    steps:
+      - checkout
+      - run:
+          name: Heroku Deploy
+          command: echo $HEROKU_APP_NAME
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git main
+      - run:
+          name: Smoke Test
+          command: |
+            HTTPCODE=`curl -s -o /dev/null -w "%{http_code}" https://$HEROKU_APP_NAME.herokuapp.com/`
+            if [ "$HTTPCODE" -ne 200 ];then
+                echo "heroku app not responding, failing deploy"
+                exit 1
+            fi
+            
+
+            
