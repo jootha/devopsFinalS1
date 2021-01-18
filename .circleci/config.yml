@@ -1,4 +1,4 @@
-version: 2 # use CircleCI 2.0//////
+version: 2 # use CircleCI 2.0
 jobs: # A basic unit of work in a run
   build: # runs not using Workflows must have a `build` job as entry point 
     docker: # run the steps with Docker
@@ -33,9 +33,7 @@ jobs: # A basic unit of work in a run
 
       - run:
           command: |
-            pip --version
             sudo pip install pipenv --upgrade
-            pip --version
             pipenv install
             pipenv lock
             pip install -r requirements/dev.txt --user
